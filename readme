@@ -1,0 +1,163 @@
+"""
+╔══════════════════════════════════════════════════════════════╗
+║           Patreon Post Scraper → DOCX  (v1.0)              ║
+║           github.com/[your-username]/patreon-to-docx        ║
+╚══════════════════════════════════════════════════════════════╝
+
+Scrapes posts from a Patreon creator page and compiles them
+into a formatted Word document (.docx).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REQUIREMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Python 3.8+  →  https://python.org/downloads
+  (check "Add Python to PATH" during install)
+
+  Then run once in Command Prompt / Terminal:
+    pip install requests python-docx
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 1 — GET YOUR COOKIE STRING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  You need to be a patron of the creator to access their posts.
+  The script logs in as you by using your browser's cookies.
+
+  1. Open Chrome/Brave and log into https://www.patreon.com
+  2. Navigate to the creator's posts page
+       e.g. https://www.patreon.com/c/creatorname/posts
+  3. Press F12 to open DevTools
+  4. Click the "Network" tab
+  5. In the filter box type:  api/posts
+  6. Press F5 to refresh the page
+  7. Click the first request that appears in the list
+  8. In the right panel click "Headers"
+  9. Scroll down to "Request Headers"
+  10. Find the line starting with "cookie:"
+  11. Copy the ENTIRE value (it's a long string)
+  12. Paste it as the value of COOKIE_STRING below
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 2 — EDIT THE CONFIG IN THE FILE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Fill in COOKIE_STRING, CREATOR_URL, and OUTPUT_FILE.
+  Optionally set FILTER_TITLE to grab only certain posts.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 3 — RUN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Windows:  Open Command Prompt, cd to this folder, then:
+              python patreon_to_docx.py
+
+  Mac/Linux: Open Terminal, cd to this folder, then:
+              python3 patreon_to_docx.py
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NOTES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  - Cookies expire after a few days. If you get an auth error,
+    repeat Step 1 to get a fresh cookie string.
+  - The script only accesses posts your account can already see.
+    Locked/paywalled posts above your tier will be skipped.
+  - Be respectful: don't scrape faster than the default delay,
+    and don't distribute authors' content without permission.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠  LEGAL DISCLAIMER — READ BEFORE USE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  BY DOWNLOADING, INSTALLING, OR RUNNING THIS SCRIPT IN ANY
+  WAY, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND
+  AGREE TO BE BOUND BY ALL OF THE FOLLOWING TERMS. IF YOU DO
+  NOT AGREE, DO NOT USE THIS SCRIPT.
+
+  1. PERSONAL USE ONLY
+     This script is provided strictly for personal,
+     non-commercial use. It is intended solely to allow
+     paying patrons to compile content they have already
+     lawfully accessed for their own private reading
+     convenience. Any other use is strictly prohibited.
+
+  2. COPYRIGHT & INTELLECTUAL PROPERTY
+     All content retrieved by this script — including but
+     not limited to text, stories, chapters, images, and
+     any other creative works — is the sole intellectual
+     property of the original content creator and is
+     protected by copyright law, including but not limited
+     to the U.S. Copyright Act (17 U.S.C.), the Digital
+     Millennium Copyright Act (DMCA), and equivalent
+     legislation worldwide (Berne Convention, EU Copyright
+     Directive, etc.).
+
+     You may NOT, under any circumstances:
+       • Distribute, share, upload, or transmit the output
+         to any other person or platform
+       • Publish, republish, or post the content online
+       • Sell, license, or monetise the content in any form
+       • Use the content for AI training or data harvesting
+       • Remove or alter any copyright notices
+       • Create derivative works for distribution
+     Doing so may constitute civil copyright infringement
+     and/or criminal copyright theft, punishable by
+     significant fines and/or imprisonment.
+
+  3. NO CIRCUMVENTION OF ACCESS CONTROLS
+     This script accesses only content that your own
+     Patreon account is authorised to view. It does not
+     bypass, crack, or circumvent any paywall or access
+     control mechanism. Using it to access content beyond
+     your paid tier would violate the DMCA (17 U.S.C.
+     §1201) and Patreon's Terms of Service, and is
+     strictly prohibited.
+
+  4. NO WARRANTY
+     THIS SCRIPT IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+     ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+     TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+     PARTICULAR PURPOSE, ACCURACY, OR NON-INFRINGEMENT.
+     THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF
+     THIS SCRIPT IS WITH YOU.
+
+  5. LIMITATION OF LIABILITY
+     TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW,
+     IN NO EVENT SHALL THE SCRIPT'S AUTHOR(S), CONTRIBUTORS,
+     DISTRIBUTORS, OR ANY ASSOCIATED PARTIES BE LIABLE FOR
+     ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+     CONSEQUENTIAL, OR PUNITIVE DAMAGES WHATSOEVER,
+     INCLUDING BUT NOT LIMITED TO:
+       • Loss of data, revenue, profits, or goodwill
+       • Legal fees, fines, or penalties incurred by you
+       • Claims brought against you by third parties
+       • Any copyright infringement you commit
+       • Any violation of Patreon's Terms of Service
+       • Any damage to your computer or systems
+     ARISING OUT OF OR IN CONNECTION WITH YOUR USE OR
+     INABILITY TO USE THIS SCRIPT, EVEN IF ADVISED OF THE
+     POSSIBILITY OF SUCH DAMAGES.
+
+  6. INDEMNIFICATION
+     By using this script you agree to fully indemnify,
+     defend, and hold harmless the script's author(s),
+     contributors, and distributors from and against any
+     and all claims, damages, losses, liabilities, costs,
+     and expenses (including reasonable legal fees) arising
+     out of or relating to your use of this script, your
+     violation of these terms, or your violation of any
+     third-party rights, including copyright.
+
+  7. USER RESPONSIBILITY
+     You, the end user, bear sole and complete
+     responsibility for:
+       • How you use this script and its output
+       • Ensuring your use complies with all applicable
+         local, national, and international laws
+       • Ensuring your use complies with Patreon's ToS
+       • Any consequences, legal or otherwise, of your use
+     Ignorance of these terms or applicable law is not a
+     defence.
+
+  8. SUPPORT THE CREATORS
+     This tool exists to enhance your reading experience,
+     not to undermine the creators whose work you enjoy.
+     Please continue supporting them directly on Patreon.
+     If you can no longer afford a subscription, cancel it
+     — do not use this tool as a substitute for payment.
+"""
